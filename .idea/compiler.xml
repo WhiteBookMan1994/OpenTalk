@@ -9,8 +9,8 @@
         <module name="jvm" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="9">
-      <module name="jvm" target="9" />
+    <bytecodeTargetLevel target="8">
+      <module name="jvm" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
