@@ -47,3 +47,7 @@ public class FinalizeEscapeGC {
     }
 
 }
+
+/*Run配置解决8：1问题
+* -XX:+PrintGCDetails -XX:-UseAdaptiveSizePolicy -XX:SurvivorRatio=8 -Xmn100m
+* */
