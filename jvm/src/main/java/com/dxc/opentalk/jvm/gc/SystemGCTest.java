@@ -1,4 +1,4 @@
-package jvmGC;
+package com.dxc.opentalk.jvm.gc;
 
 /**
  * @author dingchenchen

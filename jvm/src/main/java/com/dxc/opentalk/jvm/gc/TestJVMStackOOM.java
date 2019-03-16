@@ -1,10 +1,12 @@
+package com.dxc.opentalk.jvm.gc;
+
 /**
  * 注意　特别提示一下，如果读者要尝试运行上面这段代码，记得要先保存当前的工作。
  由于在Windows平台的虚拟机中，Java的线程是映射到操作系统的内核线程上的 [1] ，因此上述
  代码执行时有较大的风险，可能会导致操作系统假死。
  *
  * @author dxc
- * @date 2018/11/6 0006
+ * @date 2018/11/6
  */
 public class TestJVMStackOOM {
     private void dontStop(){
