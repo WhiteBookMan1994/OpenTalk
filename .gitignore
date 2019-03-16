@@ -3,3 +3,6 @@
 /*.iml
 /dubboTest/*.iml
 /src/main/main.iml
+/jvm/.idea
+/jvm/*.iml
+/jvm/target/classes/com/dxc/opentalk/jvm/gc/*.class
