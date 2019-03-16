@@ -1,1 +1,5 @@
 /target/classes/*.class
+/.idea
+/*.iml
+/dubboTest/*.iml
+/src/main/main.iml

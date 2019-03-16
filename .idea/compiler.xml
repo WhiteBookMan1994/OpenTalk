@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="jvm" />
+        <module name="dubboTest" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="8">
-      <module name="jvm" target="1.8" />
+    <bytecodeTargetLevel target="11">
+      <module name="dubboTest" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
