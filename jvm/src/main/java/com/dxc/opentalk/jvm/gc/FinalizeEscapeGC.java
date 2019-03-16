@@ -1,4 +1,4 @@
-package jvmGC;
+package com.dxc.opentalk.jvm.gc;
 
 /**
  * java对象逃脱回收实验
