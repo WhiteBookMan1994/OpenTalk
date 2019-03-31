@@ -6,3 +6,7 @@
 /jvm/.idea
 /jvm/*.iml
 /jvm/target/classes/com/dxc/opentalk/jvm/gc/*.class
+/designPattern/target/classes/com/dcc/openTalk/designPattern/*.class
+/designPattern/target/classes/com/dcc/openTalk/designPattern/strategyPattern/useDesignPattern/*.class
+/designPattern/target/classes/com/dcc/openTalk/designPattern/strategyPattern/noDesignPattern
+/designPattern/*.iml
