@@ -35,9 +35,9 @@ public class TestAllocation {
     }
 
     public static void main(String[] args) {
-        testAllocation();
+       // testAllocation();
         //main方法死循环导致堆内存使用率一直增加，并处罚GC
-       // while(true){}
+        while(true){}
        /* try {
             Thread.sleep(1000000);
         } catch (InterruptedException e) {
