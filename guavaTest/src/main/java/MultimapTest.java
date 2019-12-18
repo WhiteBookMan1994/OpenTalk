@@ -14,6 +14,7 @@ public class MultimapTest {
         multimap.put(1,3);
         multimap.put(2,2);
         multimap.put(3,3);
+        //除了两个不可变形式的实现（ImmutableListMultimap、ImmutableSetMultimap），其他所有实现都支持null键和null值
         multimap.put(null,null);
         multimap.put(null,6);
         System.out.println(multimap);
