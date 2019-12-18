@@ -12,6 +12,7 @@
         <module>jvm</module>
         <module>blog</module>
         <module>redis</module>
+        <module>guavaTest</module>
     </modules>
     <properties>
     <java.version>1.8</java.version>
