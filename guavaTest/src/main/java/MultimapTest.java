@@ -2,6 +2,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 /**
+ * 形式上key-collection的map
  * @author dingchenchen
  * @since 2019-12-16
  */
