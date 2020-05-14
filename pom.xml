@@ -15,10 +15,14 @@
         <module>guavaTest</module>
         <module>SpringBootTest</module>
         <module>springtest</module>
+        <module>nettytest</module>
     </modules>
     <properties>
-    <java.version>1.8</java.version>
-    <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
+        <java_source_version>1.8</java_source_version>
+        <java_target_version>1.8</java_target_version>
+        <file_encoding>UTF-8</file_encoding>
+        <maven_compiler_version>3.6.0</maven_compiler_version>
+        <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
     </properties>
 
     <dependencyManagement>
@@ -32,4 +36,23 @@
             </dependency>-->
         </dependencies>
     </dependencyManagement>
+    <build>
+        <plugins>
+            <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>${maven_compiler_version}</version>
+            <configuration>
+                <compilerArgs>
+                    <compilerArg>-proc:none</compilerArg>
+                    <compilerArg>-parameters</compilerArg>
+                </compilerArgs>
+                <fork>true</fork>
+                <source>${java_source_version}</source>
+                <target>${java_target_version}</target>
+                <encoding>${file_encoding}</encoding>
+            </configuration>
+        </plugin>
+        </plugins>
+    </build>
 </project>

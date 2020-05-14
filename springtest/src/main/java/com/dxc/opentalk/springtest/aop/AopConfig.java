@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @author dingchenchen
  * @since 2020-02-14
  */
-//@Aspect
+@Aspect
 @Component
 public class AopConfig {
 
