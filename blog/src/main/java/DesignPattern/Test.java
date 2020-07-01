@@ -6,7 +6,7 @@ package DesignPattern;
  */
 public class Test {
     public static void main(String[] args) {
-        Subject subject = new Proxy(new RealSubject());
+        RealSubject subject = new Proxy(new RealSubject());
         subject.request();
     }
 }
