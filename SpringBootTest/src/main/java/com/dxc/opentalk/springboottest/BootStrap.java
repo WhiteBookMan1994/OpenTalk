@@ -22,6 +22,7 @@ public class BootStrap implements ApplicationContextAware {
         System.out.println(BootStrap.applicationContext.getBean("x"));
     }
 
+    @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         BootStrap.applicationContext =applicationContext;
     }

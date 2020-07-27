@@ -5,4 +5,5 @@ package superandextends;
  * @since 2020-06-30
  */
 public class Fruit extends Food {
+    public final static String desc = "I am fruit !";
 }
