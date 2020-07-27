@@ -16,6 +16,7 @@
         <module>SpringBootTest</module>
         <module>springtest</module>
         <module>nettytest</module>
+        <module>SpringStateMachineTest</module>
     </modules>
     <properties>
         <java_source_version>1.8</java_source_version>
@@ -23,6 +24,7 @@
         <file_encoding>UTF-8</file_encoding>
         <maven_compiler_version>3.6.0</maven_compiler_version>
         <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
+        <spring-statemachine.version>2.2.0.RELEASE</spring-statemachine.version>
     </properties>
 
     <dependencyManagement>
@@ -38,6 +40,18 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.18.6</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.statemachine</groupId>
+                <artifactId>spring-statemachine-core</artifactId>
+                <version>2.2.0.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.statemachine</groupId>
+                <artifactId>spring-statemachine-bom</artifactId>
+                <version>${spring-statemachine.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
