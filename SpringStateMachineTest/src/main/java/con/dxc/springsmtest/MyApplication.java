@@ -13,14 +13,13 @@ import org.springframework.statemachine.StateMachine;
 @SpringBootApplication
 public class MyApplication implements CommandLineRunner {
     @Autowired
-    private StateMachine<States, Events> stateMachine;
+    private StateMachine<OrderStates, Events> stateMachine;
 
     public static void main(String[] args) {
         SpringApplication.run(MyApplication.class, args);
     }
 
     public void run(String... args) throws Exception {
-        stateMachine.sendEvent(Events.E1);
-        stateMachine.sendEvent(Events.E2);
+       // stateMachine.sendEvent(Events.PAY);
     }
 }

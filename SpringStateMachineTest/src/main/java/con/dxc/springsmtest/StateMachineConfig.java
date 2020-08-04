@@ -19,10 +19,10 @@ import java.util.EnumSet;
  */
 @Configuration
 @EnableStateMachine
-public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States, Events> {
+public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<OrderStates, Events> {
 
     @Override
-    public void configure(StateMachineConfigurationConfigurer<States, Events> config)
+    public void configure(StateMachineConfigurationConfigurer<OrderStates, Events> config)
             throws Exception {
         config
                 .withConfiguration()
@@ -31,30 +31,33 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
     }
 
     @Override
-    public void configure(StateMachineStateConfigurer<States, Events> states)
+    public void configure(StateMachineStateConfigurer<OrderStates, Events> states)
             throws Exception {
         states
                 .withStates()
-                .initial(States.SI)
-                .states(EnumSet.allOf(States.class));
+                .initial(OrderStates.WAIT_PAY)
+                .states(EnumSet.allOf(OrderStates.class));
     }
 
     @Override
-    public void configure(StateMachineTransitionConfigurer<States, Events> transitions)
+    public void configure(StateMachineTransitionConfigurer<OrderStates, Events> transitions)
             throws Exception {
         transitions
                 .withExternal()
-                .source(States.SI).target(States.S1).event(Events.E1)
+                .source(OrderStates.WAIT_PAY).target(OrderStates.PAID).event(Events.PAY)
                 .and()
                 .withExternal()
-                .source(States.S1).target(States.S2).event(Events.E2);
+                .source(OrderStates.PAID).target(OrderStates.WAIT_RECEIVE).event(Events.DELIVER)
+                .and()
+                .withExternal()
+                .source(OrderStates.WAIT_RECEIVE).target(OrderStates.DONE).event(Events.CONFIRM_RECEIVE);
     }
 
     @Bean
-    public StateMachineListener<States, Events> listener() {
-        return new StateMachineListenerAdapter<States, Events>() {
+    public StateMachineListener<OrderStates, Events> listener() {
+        return new StateMachineListenerAdapter<OrderStates, Events>() {
             @Override
-            public void stateChanged(State<States, Events> from, State<States, Events> to) {
+            public void stateChanged(State<OrderStates, Events> from, State<OrderStates, Events> to) {
                 System.out.println("State change to " + to.getId());
             }
         };

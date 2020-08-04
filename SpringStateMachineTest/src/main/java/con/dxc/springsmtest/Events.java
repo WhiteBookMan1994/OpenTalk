@@ -5,5 +5,10 @@ package con.dxc.springsmtest;
  * @since 2020/7/27
  */
 public enum Events {
-    E1, E2
+    //支付
+    PAY,
+    //发货
+    DELIVER,
+    //确认收货
+    CONFIRM_RECEIVE
 }
