@@ -1,6 +1,7 @@
 package con.dxc.springsmtest;
 
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.statemachine.StateContext;
@@ -16,6 +17,10 @@ import java.util.EnumSet;
  */
 @Configuration
 public class OrderStateMachineBuilder {
+
+    @Autowired
+    private BeanFactory beanFactory;
+
     /**
      * 构建状态机
      *
@@ -23,14 +28,15 @@ public class OrderStateMachineBuilder {
      * @return
      * @throws Exception
      */
-    public StateMachine<OrderStates, Events> build(String orderNo) throws Exception {
+    public StateMachine<OrderStates, Events> build() throws Exception {
         StateMachineBuilder.Builder<OrderStates, Events> builder = StateMachineBuilder.builder();
 
         System.out.println("构建订单状态机");
 
         builder.configureConfiguration()
                 .withConfiguration()
-                .machineId(orderNo);
+                .beanFactory(beanFactory)
+                .machineId("orderMachineId");
 
         builder.configureStates()
                 .withStates()

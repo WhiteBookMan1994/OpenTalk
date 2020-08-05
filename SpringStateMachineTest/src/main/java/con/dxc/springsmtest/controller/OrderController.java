@@ -1,36 +1,66 @@
 package con.dxc.springsmtest.controller;
 
 import con.dxc.springsmtest.Events;
+import con.dxc.springsmtest.OrderStateMachineBuilder;
 import con.dxc.springsmtest.OrderStates;
+import con.dxc.springsmtest.mapper.OrderMapper;
+import con.dxc.springsmtest.model.OrderDO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateMachine;
-import org.springframework.statemachine.state.State;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
+
 /**
- * 测试状态机的有状态特性
  * @author dingchenchen
- * @since 2020/7/30
+ * @since 2020/8/4
  */
 @RestController
+@RequestMapping(path = "test")
 public class OrderController {
 
     @Autowired
-    private StateMachine<OrderStates, Events> stateMachine;
+    OrderStateMachineBuilder orderStateMachineBuilder;
+
+    @Autowired
+    OrderMapper orderMapper;
+
+    @GetMapping("/order/create")
+    public String createOrder(){
+        OrderDO order = new OrderDO();
+        order.setAddress("中国北京");
+        order.setAmount(6800);
+        order.setOrderStatus(10);
+        order.setPhone("18856731111");
+        order.setUserId("YYhsqwer");
+        order.setOrderNo(String.valueOf(System.currentTimeMillis()));
+        orderMapper.insert(order);
+        return "create success !";
+    }
 
     @GetMapping("/order/pay")
-    public String payOrder(){
-        stateMachine.sendEvent(Events.PAY);
-        System.out.println("sm current state:" + stateMachine.getState());
+    public String payOrder(@RequestParam String orderNo){
+        OrderDO orderDO = orderMapper.selectByOrderNo(orderNo);
+        try {
+            StateMachine<OrderStates, Events> stateMachine = orderStateMachineBuilder.build();
+            stateMachine.start();
+            Message<Events> message = MessageBuilder.withPayload(Events.PAY)
+                    .setHeader("orderDO", orderDO)
+                    .setHeader("payChannel", "AliPay").build();
+            stateMachine.sendEvent(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "pay success !";
-}
+    }
 
     @GetMapping("/order/deliver")
     public String deliverOrder(){
-        stateMachine.sendEvent(Events.DELIVER);
-        System.out.println("sm current state:" + stateMachine.getState());
         return "deliver success !";
     }
 }
