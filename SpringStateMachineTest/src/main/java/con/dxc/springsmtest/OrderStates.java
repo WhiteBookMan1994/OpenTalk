@@ -21,4 +21,13 @@ public enum OrderStates {
     OrderStates(Integer code){
         this.code = code;
     }
+
+    public static OrderStates getByCode(Integer code){
+        for(OrderStates orderStates: values()){
+            if(orderStates.getCode().equals(code)){
+                return orderStates;
+            }
+        }
+        return null;
+    }
 }

@@ -21,10 +21,12 @@ public class OrderStateMachineBuilder {
     @Autowired
     private BeanFactory beanFactory;
 
+    @Autowired
+    OrderStateMachineEventListener orderStateMachineEventListener;
+
     /**
      * 构建状态机
      *
-     * @param orderNo
      * @return
      * @throws Exception
      */
@@ -36,7 +38,8 @@ public class OrderStateMachineBuilder {
         builder.configureConfiguration()
                 .withConfiguration()
                 .beanFactory(beanFactory)
-                .machineId("orderMachineId");
+                .machineId("orderMachineId")
+                .listener(orderStateMachineEventListener);
 
         builder.configureStates()
                 .withStates()

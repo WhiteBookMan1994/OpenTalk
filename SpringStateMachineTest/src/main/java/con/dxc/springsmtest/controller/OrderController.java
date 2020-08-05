@@ -9,12 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateMachine;
+import org.springframework.statemachine.persist.StateMachinePersister;
+import org.springframework.statemachine.support.AbstractStateMachine;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.SimpleDateFormat;
+import javax.annotation.Resource;
+
 
 /**
  * @author dingchenchen
@@ -26,6 +29,9 @@ public class OrderController {
 
     @Autowired
     OrderStateMachineBuilder orderStateMachineBuilder;
+
+    @Resource(name="orderPersister")
+    private StateMachinePersister<OrderStates, Events, OrderDO> orderPersister;
 
     @Autowired
     OrderMapper orderMapper;
@@ -53,6 +59,8 @@ public class OrderController {
                     .setHeader("orderDO", orderDO)
                     .setHeader("payChannel", "AliPay").build();
             stateMachine.sendEvent(message);
+            OrderStates orderState = stateMachine.getState().getId();
+            System.out.println("处理后订单状态：" + orderState);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,7 +68,23 @@ public class OrderController {
     }
 
     @GetMapping("/order/deliver")
-    public String deliverOrder(){
+    public String deliverOrder(@RequestParam String orderNo){
+        OrderDO orderDO = orderMapper.selectByOrderNo(orderNo);
+        try {
+            StateMachine<OrderStates, Events> stateMachine = orderStateMachineBuilder.build();
+            orderPersister.restore(stateMachine, orderDO);
+            System.out.println("根据订单状态设置后的状态机当前状态：" + stateMachine.getState().getId());
+            Message<Events> message = MessageBuilder.withPayload(Events.DELIVER)
+                    .setHeader("orderDO", orderDO)
+                    .setHeader("expressNo", "SF12435678").build();
+            stateMachine.sendEvent(message);
+            OrderStates orderState = stateMachine.getState().getId();
+            System.out.println("处理后订单状态：" + orderState);
+            orderDO.setOrderStatus(orderState.getCode());
+            orderMapper.update(orderDO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "deliver success !";
     }
 }
