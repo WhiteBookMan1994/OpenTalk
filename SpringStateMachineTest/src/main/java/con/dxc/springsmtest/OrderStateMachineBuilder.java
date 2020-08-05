@@ -38,7 +38,8 @@ public class OrderStateMachineBuilder {
         builder.configureConfiguration()
                 .withConfiguration()
                 .beanFactory(beanFactory)
-                .machineId("orderMachineId")
+               // .machineId(String.valueOf(new char[1024 * 1024 * 2]))
+                .machineId("orderStateMachine")
                 .listener(orderStateMachineEventListener);
 
         builder.configureStates()
@@ -59,7 +60,9 @@ public class OrderStateMachineBuilder {
                 .source(OrderStates.WAIT_RECEIVE).target(OrderStates.DONE)
                 .event(Events.CONFIRM_RECEIVE);
 
-        return builder.build();
+         StateMachine<OrderStates, Events> statemachine =  builder.build();
+        System.out.println("statemachine对象:"+"@" + Integer.toHexString(statemachine.hashCode()));
+         return statemachine;
     }
 
     @Bean

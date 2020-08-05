@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -70,9 +74,22 @@ public class OrderController {
     @GetMapping("/order/deliver")
     public String deliverOrder(@RequestParam String orderNo){
         OrderDO orderDO = orderMapper.selectByOrderNo(orderNo);
+        //List<StateMachine> machineList = new ArrayList<>();
         try {
-            StateMachine<OrderStates, Events> stateMachine = orderStateMachineBuilder.build();
-            orderPersister.restore(stateMachine, orderDO);
+            /*for(long i = 0; i<=2000 *1024000;i++){
+                StateMachine<OrderStates, Events> stateMachine = orderStateMachineBuilder.build();
+                System.out.println("溢出前size:"+ i);
+               // machineList.add(stateMachine);
+            }
+            // StateMachine<OrderStates, Events> stateMachine = machineList.get(99);*/
+            ReferenceQueue<StateMachine> referenceQueue = new ReferenceQueue<>();
+           // StateMachine<OrderStates, Events> stateMachine = orderStateMachineBuilder.build();
+           // System.out.println("生成的statemachine对象" + stateMachine);
+            WeakReference<StateMachine> weakReference = new WeakReference<>( orderStateMachineBuilder.build(), referenceQueue);
+            System.gc();
+            Thread.sleep(5000);
+            System.out.println("回收的对象："+referenceQueue.poll().get());
+            /*orderPersister.restore(stateMachine, orderDO);
             System.out.println("根据订单状态设置后的状态机当前状态：" + stateMachine.getState().getId());
             Message<Events> message = MessageBuilder.withPayload(Events.DELIVER)
                     .setHeader("orderDO", orderDO)
@@ -81,7 +98,7 @@ public class OrderController {
             OrderStates orderState = stateMachine.getState().getId();
             System.out.println("处理后订单状态：" + orderState);
             orderDO.setOrderStatus(orderState.getCode());
-            orderMapper.update(orderDO);
+            orderMapper.update(orderDO);*/
         } catch (Exception e) {
             e.printStackTrace();
         }
