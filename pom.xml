@@ -17,6 +17,7 @@
         <module>springtest</module>
         <module>nettytest</module>
         <module>SpringStateMachineTest</module>
+        <module>dubboTest</module>
     </modules>
     <properties>
         <java_source_version>1.8</java_source_version>
