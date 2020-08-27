@@ -18,6 +18,7 @@ public class ConsumerApplication {
         reference.setApplication(new ApplicationConfig("first-dubbo-consumer"));
         reference.setRegistry(new RegistryConfig("zookeeper://" + zookeeperHost + ":2181"));
         reference.setInterface(GreetingService.class);
+       // reference.setFilter("com.dxc.dubbotest.consumer.ConsumerFilter");
         GreetingService service = reference.get();
         String message = service.sayHello("dubbo");
         System.out.println(message);
