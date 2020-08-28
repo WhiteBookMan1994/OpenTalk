@@ -34,14 +34,14 @@ public class OrderController {
     @Autowired
     OrderStateMachineBuilder orderStateMachineBuilder;
 
-    @Resource(name="orderPersister")
+    @Resource(name = "orderPersister")
     private StateMachinePersister<OrderStates, Events, OrderDO> orderPersister;
 
     @Autowired
     OrderMapper orderMapper;
 
     @GetMapping("/order/create")
-    public String createOrder(){
+    public String createOrder() {
         OrderDO order = new OrderDO();
         order.setAddress("中国北京");
         order.setAmount(6800);
@@ -54,7 +54,7 @@ public class OrderController {
     }
 
     @GetMapping("/order/pay")
-    public String payOrder(@RequestParam String orderNo){
+    public String payOrder(@RequestParam String orderNo) {
         OrderDO orderDO = orderMapper.selectByOrderNo(orderNo);
         try {
             StateMachine<OrderStates, Events> stateMachine = orderStateMachineBuilder.build();
@@ -71,37 +71,45 @@ public class OrderController {
         return "pay success !";
     }
 
-    @GetMapping("/order/deliver")
-    public String deliverOrder(@RequestParam String orderNo){
+    /**
+     * 工厂创建的状态机状态是初始状态，这样写状态机不会触发Events.DELIVER事件
+     * 因为当前状态是初始状态
+     */
+    @GetMapping("/order/deliver1")
+    public String deliverOrder1(@RequestParam String orderNo) throws Exception {
         OrderDO orderDO = orderMapper.selectByOrderNo(orderNo);
-        //List<StateMachine> machineList = new ArrayList<>();
+        StateMachine<OrderStates, Events> stateMachine = orderStateMachineBuilder.build();
+        stateMachine.start();
+        Message<Events> message = MessageBuilder.withPayload(Events.DELIVER)
+                .setHeader("orderDO", orderDO)
+                .setHeader("payChannel", "AliPay").build();
+        stateMachine.sendEvent(message);
+        OrderStates orderState = stateMachine.getState().getId();
+        System.out.println("处理后订单状态：" + orderState);
+        return "deliver success !";
+    }
+
+    /**
+     * 利用持久化接口的restore方法，根据orderDO中的状态设置状态机当前状态
+     */
+    @GetMapping("/order/deliver2")
+    public String deliverOrder2(@RequestParam String orderNo) throws Exception {
+        OrderDO orderDO = orderMapper.selectByOrderNo(orderNo);
+        StateMachine<OrderStates, Events> stateMachine = orderStateMachineBuilder.build();
         try {
-            /*for(long i = 0; i<=2000 *1024000;i++){
-                StateMachine<OrderStates, Events> stateMachine = orderStateMachineBuilder.build();
-                System.out.println("溢出前size:"+ i);
-               // machineList.add(stateMachine);
-            }
-            // StateMachine<OrderStates, Events> stateMachine = machineList.get(99);*/
-            ReferenceQueue<StateMachine> referenceQueue = new ReferenceQueue<>();
-           // StateMachine<OrderStates, Events> stateMachine = orderStateMachineBuilder.build();
-           // System.out.println("生成的statemachine对象" + stateMachine);
-            WeakReference<StateMachine> weakReference = new WeakReference<>( orderStateMachineBuilder.build(), referenceQueue);
-            System.gc();
-            Thread.sleep(5000);
-            System.out.println("回收的对象："+referenceQueue.poll().get());
-            /*orderPersister.restore(stateMachine, orderDO);
-            System.out.println("根据订单状态设置后的状态机当前状态：" + stateMachine.getState().getId());
-            Message<Events> message = MessageBuilder.withPayload(Events.DELIVER)
-                    .setHeader("orderDO", orderDO)
-                    .setHeader("expressNo", "SF12435678").build();
-            stateMachine.sendEvent(message);
-            OrderStates orderState = stateMachine.getState().getId();
-            System.out.println("处理后订单状态：" + orderState);
-            orderDO.setOrderStatus(orderState.getCode());
-            orderMapper.update(orderDO);*/
+            orderPersister.restore(stateMachine, orderDO);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("根据订单状态设置后的状态机当前状态：" + stateMachine.getState().getId());
+        Message<Events> message = MessageBuilder.withPayload(Events.DELIVER)
+                .setHeader("orderDO", orderDO)
+                .setHeader("expressNo", "SF12435678").build();
+        stateMachine.sendEvent(message);
+        OrderStates orderState = stateMachine.getState().getId();
+        System.out.println("处理后订单状态：" + orderState);
+        orderDO.setOrderStatus(orderState.getCode());
+        orderMapper.update(orderDO);
         return "deliver success !";
     }
 }
