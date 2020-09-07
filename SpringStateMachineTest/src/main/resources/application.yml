@@ -1,2 +1,12 @@
 server:
   port: 9090
+Spring:
+  datasource:
+    url:
+    username:
+    password:
+    driver-class-name: com.mysql.jdbc.Driver
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
