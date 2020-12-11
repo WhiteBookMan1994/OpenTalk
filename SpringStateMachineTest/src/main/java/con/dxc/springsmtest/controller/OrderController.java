@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateMachine;
+import org.springframework.statemachine.StateMachineContext;
 import org.springframework.statemachine.persist.StateMachinePersister;
 import org.springframework.statemachine.support.AbstractStateMachine;
+import org.springframework.statemachine.support.DefaultStateMachineContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -101,6 +103,36 @@ public class OrderController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("根据订单状态设置后的状态机当前状态：" + stateMachine.getState().getId());
+        Message<Events> message = MessageBuilder.withPayload(Events.DELIVER)
+                .setHeader("orderDO", orderDO)
+                .setHeader("expressNo", "SF12435678").build();
+        stateMachine.sendEvent(message);
+        OrderStates orderState = stateMachine.getState().getId();
+        System.out.println("处理后订单状态：" + orderState);
+        orderDO.setOrderStatus(orderState.getCode());
+        orderMapper.update(orderDO);
+        return "deliver success !";
+    }
+
+    /**
+     * 利用StateMachineAccess<S, E>接口resetStateMachine方法，重新设置状态机上下文的方法是可以设置当前状态的
+     * 其实反持久化接口 orderPersister.restore 方法内部就是这样恢复状态当前上下文的
+     */
+    @GetMapping("/order/deliver3")
+    public String deliverOrder3(@RequestParam String orderNo) throws Exception {
+        OrderDO orderDO = orderMapper.selectByOrderNo(orderNo);
+        StateMachine<OrderStates, Events> stateMachine = orderStateMachineBuilder.build();
+        StateMachineContext<OrderStates, Events> stateMachineContext = new DefaultStateMachineContext<OrderStates, Events>(new ArrayList<>(), OrderStates.getByCode(orderDO.getOrderStatus()),
+                null, null, null, null, stateMachine.getId());
+        try {
+            // 设置状态机实例当前状态
+            stateMachine.getStateMachineAccessor().doWithAllRegions(function -> function.resetStateMachine(stateMachineContext));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // 别忘了start 状态机，否则也不会触发状态流转
+        stateMachine.start();
         System.out.println("根据订单状态设置后的状态机当前状态：" + stateMachine.getState().getId());
         Message<Events> message = MessageBuilder.withPayload(Events.DELIVER)
                 .setHeader("orderDO", orderDO)
