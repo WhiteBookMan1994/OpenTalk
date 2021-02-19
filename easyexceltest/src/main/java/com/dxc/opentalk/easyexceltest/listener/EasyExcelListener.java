@@ -13,6 +13,9 @@ import java.util.Objects;
 /**
  * EasyExcelListener使用示例参见 easyexcel 的测试用例
  * 需要注意的是 EasyExcelListener 一般不能设计成单例的
+ *
+ * see https://github.com/alibaba/easyexcel/blob/master/src/test/java/com/alibaba/easyexcel/test/demo/web/UploadDataListener.java
+ *
  * @author dingchenchen
  * @since 2021/2/19
  */
