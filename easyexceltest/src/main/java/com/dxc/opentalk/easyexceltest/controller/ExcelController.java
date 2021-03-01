@@ -4,13 +4,23 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.EasyExcelFactory;
 import com.dxc.opentalk.easyexceltest.data.UploadData;
 import com.dxc.opentalk.easyexceltest.listener.EasyExcelListener;
+import lombok.SneakyThrows;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -32,9 +42,37 @@ public class ExcelController {
         EasyExcelFactory.read(file.getInputStream(), UploadData.class, easyExcelListener).sheet().doRead();
         List<UploadData> errList = easyExcelListener.getErrorList();
         //如果包含错误信息就导出错误信息
-        if (!errList.isEmpty()){
+        if (!errList.isEmpty()) {
             EasyExcel.write(response.getOutputStream(), UploadData.class).sheet("导入结果附带错误信息").doWrite(errList);
         }
         return "success";
+    }
+
+    @SneakyThrows
+    @GetMapping("/download")
+    public void download(HttpServletResponse response) throws MalformedURLException {
+        URL url = new URL("http://souche-devqa.oss-cn-hangzhou.aliyuncs.com/6033258452aef377111fc2d8.xlsx");
+        HttpURLConnection httpConn = null;
+        try {
+            httpConn = (HttpURLConnection) url.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            httpConn.connect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        InputStream cin = null;
+        try {
+            cin = httpConn.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            EasyExcel.read(cin, UploadData.class, new EasyExcelListener()).sheet().doRead();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

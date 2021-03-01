@@ -1,10 +1,13 @@
 package com.dxc.opentalk.easyexceltest.data;
 
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.annotation.format.DateTimeFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 /**
  * @author dingchenchen
@@ -37,6 +40,12 @@ public class UploadData {
      * */
     @ExcelProperty("线索来源")
     private String clueChannel;
+
+    /**
+     * 日期，"yyyy年MM月"可以正常解析Excel中的"2020年2月"字符串数据
+     * */
+    @DateTimeFormat("yyyy年MM月")
+    private Date date;
 
     /**
      * 返回的错误信息列
