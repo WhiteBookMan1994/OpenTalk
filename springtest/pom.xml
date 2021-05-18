@@ -16,7 +16,13 @@
     <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-context</artifactId>
-        <version>5.0.5.RELEASE</version>
+        <version>5.2.7.RELEASE</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-aop</artifactId>
+        <version>5.2.7.RELEASE</version>
     </dependency>
 
     <!--解析切入点表达式-->
@@ -28,6 +34,10 @@
     <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-web</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-tx</artifactId>
     </dependency>
 </dependencies>
 </project>

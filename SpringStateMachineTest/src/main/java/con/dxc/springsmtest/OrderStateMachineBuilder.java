@@ -8,6 +8,7 @@ import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.config.StateMachineBuilder;
+import org.springframework.statemachine.guard.Guard;
 
 import java.util.EnumSet;
 
@@ -50,7 +51,12 @@ public class OrderStateMachineBuilder {
         builder.configureTransitions()
                 .withExternal()
                 .source(OrderStates.WAIT_PAY).target(OrderStates.PAID)
-                .event(Events.PAY).action(action())
+                .event(Events.PAY).guard(new Guard<OrderStates, Events>() {
+            @Override
+            public boolean evaluate(StateContext<OrderStates, Events> context) {
+                return false;
+            }
+        }).action(action())
                 .and()
                 .withExternal()
                 .source(OrderStates.PAID).target(OrderStates.WAIT_RECEIVE)

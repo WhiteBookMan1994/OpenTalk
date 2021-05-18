@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class Y {
 
     public Y() {
-        System.out.println("Construct Y");
+        //System.out.println("Construct Y");
     }
 
     public void test(){

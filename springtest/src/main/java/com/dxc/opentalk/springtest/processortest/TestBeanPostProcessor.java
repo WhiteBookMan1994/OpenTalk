@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  * @author dingchenchen
  * @since 2021/2/5
  */
-@Component
+//@Component
 public class TestBeanPostProcessor implements BeanPostProcessor {
 
     @Override

@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -21,6 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -51,7 +53,7 @@ public class ExcelController {
     @SneakyThrows
     @GetMapping("/download")
     public void download(HttpServletResponse response) throws MalformedURLException {
-        URL url = new URL("http://souche-devqa.oss-cn-hangzhou.aliyuncs.com/6033258452aef377111fc2d8.xlsx");
+        URL url = new URL("http://xxxx.aliyuncs.com/6033258452aef377111fc2d8.xlsx");
         HttpURLConnection httpConn = null;
         try {
             httpConn = (HttpURLConnection) url.openConnection();
@@ -75,4 +77,43 @@ public class ExcelController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 模拟下载本地Excel文件
+     * @param response
+     * @throws IOException
+     */
+    @GetMapping("/downloadLocal")
+    public void downloadFromLocalFile(HttpServletResponse response) throws IOException {
+        response.setContentType("application/vnd.ms-excel");
+        response.setCharacterEncoding("utf-8");
+        String exportFileName = URLEncoder.encode("潜客导出数据文件", "UTF-8");
+        response.setHeader("Content-disposition", "attachment;filename=" + exportFileName + ".xlsx");
+        String fileName = "/Users/dingchenchen" + File.separator + "Downloads" + File.separator + "K2KbendiTest.xlsx";
+        File file = new File(fileName);
+        if (file.exists()) {
+            byte[] b = new byte[100];
+            int len;
+            FileInputStream inputStream = null;
+            try {
+                inputStream = new FileInputStream(file);
+                while ((len = inputStream.read(b)) > 0)
+                    response.getOutputStream().write(b, 0, len);
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            }
+        }
+    }
+    /*
+    * 采用 hutool 框架写法：
+    * try {
+            IoUtil.copy(classPathResource.getInputStream(), response.getOutputStream());
+        }finally {
+            IoUtil.close(classPathResource.getInputStream());
+            IoUtil.close(response.getOutputStream());
+            IoUtil.flush(response.getOutputStream());
+        }
+    * */
 }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @author dingchenchen
  * @since 2020-04-16
  */
-@Component
+//@Component
 public class XBeanPostProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName)throws BeansException {

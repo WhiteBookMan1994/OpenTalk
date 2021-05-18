@@ -18,8 +18,8 @@ public class TestBean {
     /**
      * 采用@PostConstruct注解定义的bean的初始化回调方法
      */
-    @PostConstruct
+    /*@PostConstruct
     public void test() {
         testBean1.sayHi();
-    }
+    }*/
 }
