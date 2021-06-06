@@ -1,17 +1,16 @@
-package con.dxc.springsmtest.controller;
+package com.dxc.springsmtest.controller;
 
-import con.dxc.springsmtest.Events;
-import con.dxc.springsmtest.OrderStateMachineBuilder;
-import con.dxc.springsmtest.OrderStates;
-import con.dxc.springsmtest.mapper.OrderMapper;
-import con.dxc.springsmtest.model.OrderDO;
+import com.dxc.springsmtest.mapper.OrderMapper;
+import com.dxc.springsmtest.Events;
+import com.dxc.springsmtest.OrderStateMachineBuilder;
+import com.dxc.springsmtest.OrderStates;
+import com.dxc.springsmtest.model.OrderDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.StateMachineContext;
 import org.springframework.statemachine.persist.StateMachinePersister;
-import org.springframework.statemachine.support.AbstractStateMachine;
 import org.springframework.statemachine.support.DefaultStateMachineContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.lang.ref.ReferenceQueue;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**

@@ -1,4 +1,4 @@
-package con.dxc.springsmtest;
+package com.dxc.springsmtest;
 
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;

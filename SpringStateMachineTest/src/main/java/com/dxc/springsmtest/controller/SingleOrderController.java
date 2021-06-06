@@ -1,11 +1,9 @@
-package con.dxc.springsmtest.controller;
+package com.dxc.springsmtest.controller;
 
-import con.dxc.springsmtest.Events;
-import con.dxc.springsmtest.OrderStates;
+import com.dxc.springsmtest.Events;
+import com.dxc.springsmtest.OrderStates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.statemachine.StateMachine;
-import org.springframework.statemachine.state.State;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

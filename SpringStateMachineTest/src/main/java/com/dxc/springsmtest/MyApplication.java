@@ -1,4 +1,4 @@
-package con.dxc.springsmtest;
+package com.dxc.springsmtest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

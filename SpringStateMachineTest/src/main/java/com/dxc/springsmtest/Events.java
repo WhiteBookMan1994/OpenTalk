@@ -1,4 +1,4 @@
-package con.dxc.springsmtest;
+package com.dxc.springsmtest;
 
 /**
  * @author dingchenchen

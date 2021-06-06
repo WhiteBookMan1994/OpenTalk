@@ -1,4 +1,4 @@
-package con.dxc.springsmtest.model;
+package com.dxc.springsmtest.model;
 
 import lombok.Data;
 

@@ -1,7 +1,7 @@
-package con.dxc.springsmtest;
+package com.dxc.springsmtest;
 
-import con.dxc.springsmtest.mapper.OrderMapper;
-import con.dxc.springsmtest.model.OrderDO;
+import com.dxc.springsmtest.mapper.OrderMapper;
+import com.dxc.springsmtest.model.OrderDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.statemachine.annotation.OnTransition;

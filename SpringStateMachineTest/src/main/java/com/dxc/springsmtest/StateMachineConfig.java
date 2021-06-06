@@ -1,4 +1,4 @@
-package con.dxc.springsmtest;
+package com.dxc.springsmtest;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,6 +1,6 @@
-package con.dxc.springsmtest;
+package com.dxc.springsmtest;
 
-import con.dxc.springsmtest.model.OrderDO;
+import com.dxc.springsmtest.model.OrderDO;
 import org.springframework.statemachine.StateMachineContext;
 import org.springframework.statemachine.StateMachinePersist;
 import org.springframework.statemachine.support.DefaultStateMachineContext;
